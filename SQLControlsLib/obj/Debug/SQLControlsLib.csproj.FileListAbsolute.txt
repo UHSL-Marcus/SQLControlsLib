@@ -1,0 +1,6 @@
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\bin\Debug\SQLControls.dll.config
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\bin\Debug\SQLControls.dll
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\bin\Debug\SQLControls.pdb
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\obj\Debug\SQLControlsLib.csprojResolveAssemblyReference.cache
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\obj\Debug\SQLControls.dll
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\obj\Debug\SQLControls.pdb

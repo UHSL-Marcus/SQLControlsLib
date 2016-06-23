@@ -1,0 +1,6 @@
+C:\Users\ML15AAF\Documents\GitHub\OneScanQR\OneScanWebApp\SQLControls\bin\Debug\SQLControls.dll.config
+C:\Users\ML15AAF\Documents\GitHub\OneScanQR\OneScanWebApp\SQLControls\bin\Debug\SQLControls.dll
+C:\Users\ML15AAF\Documents\GitHub\OneScanQR\OneScanWebApp\SQLControls\bin\Debug\SQLControls.pdb
+C:\Users\ML15AAF\Documents\GitHub\OneScanQR\OneScanWebApp\SQLControls\obj\Debug\SQLControls.csprojResolveAssemblyReference.cache
+C:\Users\ML15AAF\Documents\GitHub\OneScanQR\OneScanWebApp\SQLControls\obj\Debug\SQLControls.dll
+C:\Users\ML15AAF\Documents\GitHub\OneScanQR\OneScanWebApp\SQLControls\obj\Debug\SQLControls.pdb
