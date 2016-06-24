@@ -379,8 +379,8 @@ namespace SQLControlsLib
             foreach (FieldInfo field in tempType.GetFields())
             {
                 object value;
-                values.TryGetValue(field.Name, out value);
-                field.SetValue(ob, value);
+                if (values.TryGetValue(field.Name, out value))
+                    field.SetValue(ob, value);
             }
 
             return ob;

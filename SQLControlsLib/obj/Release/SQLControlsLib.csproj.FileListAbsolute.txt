@@ -3,3 +3,4 @@ C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\bin\Release\SQLC
 C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\bin\Release\SQLControlsLib.pdb
 C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\obj\Release\SQLControlsLib.dll
 C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\obj\Release\SQLControlsLib.pdb
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLib\obj\Release\SQLControlsLib.csprojResolveAssemblyReference.cache
