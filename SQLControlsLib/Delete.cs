@@ -36,19 +36,22 @@ namespace SQLControlsLib
             return SharedUtils.getSingleEntry(cmd, "Id", out output);
         }*/
 
-        public static bool doDeleteEntryByColumn<TYPE, inT>(inT info, string column)
+        public static bool doDeleteEntryByColumn<TYPE, inT>(inT info, string column, bool not = false)
         {
             Type type = typeof(TYPE);
-            Dictionary<string, object> conditions = new Dictionary<string, object>();
-            conditions.Add(column, info);
-            return doDelete(type.Name, conditions);
+            SharedUtils.buildDatabaseObjectSingleField(type.Name, info, column);
+
+            return doDelete(SharedUtils.buildDatabaseObjectSingleField(type.Name, info, column), not);
         }
 
-        public static bool doDeleteEntryByColumn<inT>(string table, inT info, string column)
+        public static bool doDeleteEntryByID<TYPE, inT>(inT id, bool not = false)
         {
-            Dictionary<string, object> conditions = new Dictionary<string, object>();
-            conditions.Add(column, info);
-            return doDelete(table, conditions);
+            return doDeleteEntryByColumn<TYPE, inT>(id, SharedUtils.getTypeIDColumn(typeof(TYPE)), not);
+        }
+
+        public static bool doDeleteEntryByColumn<inT>(string table, inT info, string column, bool not = false)
+        {
+            return doDelete(SharedUtils.buildDatabaseObjectSingleField(table, info, column), not);
         }
 
         internal static string getDeleteQuery(whereObject[] obs, string table, ref SqlCommand cmd, string preWhereExtra)

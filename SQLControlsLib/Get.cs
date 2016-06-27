@@ -13,9 +13,26 @@ namespace SQLControlsLib
 {
     public class Get
     {
+
+        public static bool doSelectAll<TYPE>(out List<TYPE> output)
+        {
+            return doSelect(new whereObject[0], typeof(TYPE).Name, "*", out output);
+        }
         public static bool doSelectByColumn<TYPE, inT>(inT info, string column, out List<TYPE> output)
         {
             return doSelect<TYPE>(SharedUtils.buildDatabaseObjectSingleField(typeof(TYPE).Name, info, column), "*", out output);
+        }
+
+        public static bool doSelectByID<TYPE>(TYPE ob, out List<TYPE> output) where TYPE:DatabaseTableObject
+        {
+            string IDColumn = SharedUtils.getTypeIDColumn(typeof(TYPE));
+            return doSelectByColumn(ob.getObjectFieldValue(IDColumn), IDColumn, out output);
+        }
+
+        public static bool doSelectByID<TYPE, inT>(inT ID, out List<TYPE> output) where TYPE : DatabaseTableObject
+        {
+            string IDColumn = SharedUtils.getTypeIDColumn(typeof(TYPE));
+            return doSelectByColumn(ID, IDColumn, out output);
         }
 
         public static bool doSelectSingleColumnByColumn<TYPE, outT, inT>(inT checkInfo, string inColumn, string outColumn, out outT output)
@@ -29,7 +46,7 @@ namespace SQLControlsLib
 
         public static bool doSelectIDByColumn<TYPE, inT>(inT info, string column, out int? output)
         {
-            return doSelectSingleColumnByColumn(info, typeof(TYPE).Name, column, "Id", out output);
+            return doSelectSingleColumnByColumn(info, typeof(TYPE).Name, column, SharedUtils.getTypeIDColumn(typeof(TYPE)), out output);
         }
 
         public static bool getEntryExistsByColumn<TYPE, inT>(inT info, string column)
@@ -45,7 +62,7 @@ namespace SQLControlsLib
         }
         public static bool doSelectID(DatabaseTableObject ob, out int? output, bool notModifer = false)
         {
-            return doSelectSingleColumn(ob, "Id", out output, notModifer);
+            return doSelectSingleColumn(ob, SharedUtils.getTypeIDColumn(ob.GetType()), out output, notModifer);
         }
 
         public static bool doSelectSingleColumn<outT>(DatabaseTableObject ob, string column, out outT output, bool notModifer = false)

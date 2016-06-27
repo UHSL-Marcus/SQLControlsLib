@@ -1,0 +1,8 @@
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\ConsoleApplication1\bin\Release\ConsoleApplication1.exe.config
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\ConsoleApplication1\bin\Release\ConsoleApplication1.exe
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\ConsoleApplication1\bin\Release\ConsoleApplication1.pdb
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\ConsoleApplication1\bin\Release\SQLControlsLib.dll
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\ConsoleApplication1\bin\Release\SQLControlsLib.pdb
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\ConsoleApplication1\obj\Release\ConsoleApplication1.csprojResolveAssemblyReference.cache
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\ConsoleApplication1\obj\Release\ConsoleApplication1.exe
+C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\ConsoleApplication1\obj\Release\ConsoleApplication1.pdb

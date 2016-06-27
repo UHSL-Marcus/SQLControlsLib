@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Delete.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Get.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +56,7 @@
     <Compile Include="SharedUtils.cs" />
     <Compile Include="DatabaseTypeBuilder.cs" />
     <Compile Include="StringEnum.cs" />
+    <Compile Include="StructureClassTemplates.cs" />
     <Compile Include="Update.cs" />
   </ItemGroup>
   <ItemGroup>
