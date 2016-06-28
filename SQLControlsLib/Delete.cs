@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SQLControlsLib
 {
@@ -46,7 +41,12 @@ namespace SQLControlsLib
 
         public static bool doDeleteEntryByID<TYPE, inT>(inT id, bool not = false)
         {
-            return doDeleteEntryByColumn<TYPE, inT>(id, SharedUtils.getTypeIDColumn(typeof(TYPE)), not);
+            string idColumn = SharedUtils.getTypeIDColumn(typeof(TYPE));
+
+            if (idColumn.Length > 0)
+                return doDeleteEntryByColumn<TYPE, inT>(id, idColumn, not);
+
+            return false;
         }
 
         public static bool doDeleteEntryByColumn<inT>(string table, inT info, string column, bool not = false)

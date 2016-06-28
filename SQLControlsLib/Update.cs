@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SQLControlsLib
 {
@@ -93,8 +89,13 @@ namespace SQLControlsLib
 
         public static bool doUpdateByID<TYPE>(TYPE ob) where TYPE : DatabaseTableObject
         {
-            string IDColumn = SharedUtils.getTypeIDColumn(typeof(TYPE));
-            return doUpdate(ob, IDColumn, ob.getObjectFieldValue(IDColumn).ToString());
+
+            string idColumn = SharedUtils.getTypeIDColumn(ob.GetType());
+
+            if (idColumn.Length > 0)
+                return doUpdate(ob, idColumn, ob.getObjectFieldValue(idColumn).ToString());
+
+            return false;
         }
     }
 }

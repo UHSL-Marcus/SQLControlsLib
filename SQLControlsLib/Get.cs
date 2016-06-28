@@ -1,13 +1,7 @@
-﻿using SQLControlsLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SQLControlsLib
 {
@@ -25,14 +19,24 @@ namespace SQLControlsLib
 
         public static bool doSelectByID<TYPE>(TYPE ob, out List<TYPE> output) where TYPE:DatabaseTableObject
         {
+            output = new List<TYPE>();
+
             string IDColumn = SharedUtils.getTypeIDColumn(typeof(TYPE));
-            return doSelectByColumn(ob.getObjectFieldValue(IDColumn), IDColumn, out output);
+            if (IDColumn.Length > 0)
+                return doSelectByColumn(ob.getObjectFieldValue(IDColumn), IDColumn, out output);
+
+            return false;
         }
 
         public static bool doSelectByID<TYPE, inT>(inT ID, out List<TYPE> output) where TYPE : DatabaseTableObject
         {
+            output = new List<TYPE>();
+
             string IDColumn = SharedUtils.getTypeIDColumn(typeof(TYPE));
-            return doSelectByColumn(ID, IDColumn, out output);
+            if (IDColumn.Length > 0)
+                return doSelectByColumn(ID, IDColumn, out output);
+
+            return false;
         }
 
         public static bool doSelectSingleColumnByColumn<TYPE, outT, inT>(inT checkInfo, string inColumn, string outColumn, out outT output)
@@ -44,15 +48,21 @@ namespace SQLControlsLib
             return doSelectSingleColumn(SharedUtils.buildDatabaseObjectSingleField(table, checkInfo, inColumn), outColumn, out output, false);
         }
 
-        public static bool doSelectIDByColumn<TYPE, inT>(inT info, string column, out int? output)
+        public static bool doSelectIDByColumn<TYPE, inT, outT>(inT info, string column, out outT output)
         {
-            return doSelectSingleColumnByColumn(info, typeof(TYPE).Name, column, SharedUtils.getTypeIDColumn(typeof(TYPE)), out output);
+            output = default(outT);
+            string idColumn = SharedUtils.getTypeIDColumn(typeof(TYPE));
+
+            if (idColumn.Length > 0)
+                return doSelectSingleColumnByColumn(info, typeof(TYPE).Name, column, SharedUtils.getTypeIDColumn(typeof(TYPE)), out output);
+
+            return false;
         }
 
         public static bool getEntryExistsByColumn<TYPE, inT>(inT info, string column)
         {
-            int? i;
-            return doSelectIDByColumn<TYPE, inT>(info, column, out i);
+            object i;
+            return doSelectIDByColumn<TYPE, inT, object>(info, column, out i);
         }
 
         public static bool doSelectEntryExists(DatabaseTableObject ob, bool notModifer = false)
@@ -60,9 +70,15 @@ namespace SQLControlsLib
             int? i;
             return doSelectID(ob, out i, notModifer);
         }
-        public static bool doSelectID(DatabaseTableObject ob, out int? output, bool notModifer = false)
+        public static bool doSelectID<outT>(DatabaseTableObject ob, out outT output, bool notModifer = false)
         {
-            return doSelectSingleColumn(ob, SharedUtils.getTypeIDColumn(ob.GetType()), out output, notModifer);
+            output = default(outT);
+            string idColumn = SharedUtils.getTypeIDColumn(ob.GetType());
+
+            if (idColumn.Length > 0)
+                return doSelectSingleColumn(ob, idColumn, out output, notModifer);
+
+            return false;
         }
 
         public static bool doSelectSingleColumn<outT>(DatabaseTableObject ob, string column, out outT output, bool notModifer = false)

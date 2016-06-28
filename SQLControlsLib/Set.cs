@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SQLControlsLib
 {
@@ -36,7 +33,7 @@ namespace SQLControlsLib
             string select = "; SELECT "+ IDColumn +" FROM @outputTable;";
 
             SqlCommand cmd = new SqlCommand();
-            string query = getInsertQuery<TYPE>(ob, ref cmd, outputExtra, select);
+            string query = getInsertQuery(ob, ref cmd, outputExtra, select);
             cmd.CommandText = declaration + query;
 
 
