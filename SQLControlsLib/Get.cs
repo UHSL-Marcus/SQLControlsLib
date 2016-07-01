@@ -59,16 +59,27 @@ namespace SQLControlsLib
             return false;
         }
 
-        public static bool getEntryExistsByColumn<TYPE, inT>(inT info, string column)
+        public static bool doEntryExistsByColumn<TYPE, inT>(inT info, string column, bool notModifer = false)
         {
-            object i;
-            return doSelectIDByColumn<TYPE, inT, object>(info, column, out i);
+            return doEntryExists(SharedUtils.buildDatabaseObjectSingleField(typeof(TYPE).Name, info, column), notModifer);
         }
 
-        public static bool doSelectEntryExists(DatabaseTableObject ob, bool notModifer = false)
+        public static bool doEntryExistsByID<TYPE, inT>(inT ID, bool notModifer = false) where TYPE : DatabaseTableObject
         {
-            int? i;
-            return doSelectID(ob, out i, notModifer);
+            
+            string IDColumn = SharedUtils.getTypeIDColumn(typeof(TYPE));
+            if (IDColumn.Length > 0)
+                return doEntryExistsByColumn<TYPE, inT>(ID, IDColumn, notModifer);
+
+            return false;
+        }
+
+        public static bool doEntryExists(DatabaseTableObject ob, bool notModifer = false)
+        {
+            SqlCommand cmd = new SqlCommand();
+            string query = getSelectQuery(ob, ref cmd, "1", "", notModifer) + " LIMIT 1";
+            cmd.CommandText = query;
+            return SharedUtils.doNonQuery(cmd);
         }
         public static bool doSelectID<outT>(DatabaseTableObject ob, out outT output, bool notModifer = false)
         {
@@ -94,9 +105,10 @@ namespace SQLControlsLib
             SqlCommand cmd = new SqlCommand();
             string query = getSelectQuery(ob, ref cmd, columnName, "", notModifer);
             cmd.CommandText = query;
-            output = SharedUtils.getData<outType>(cmd, columnName);
-            return (output.Count > 0);
+            if (SharedUtils.getData(cmd, columnName, out output))
+                return (output.Count > 0);
 
+            return false;
         }
 
         public static bool doSelect<TYPE>(DatabaseTableObject where, string selArg, out List<TYPE> output, bool notModifer = false)
@@ -109,8 +121,10 @@ namespace SQLControlsLib
             SqlCommand cmd = new SqlCommand();
             string query = getSelectQuery(whereobs, table, ref cmd, selArg, "");
             cmd.CommandText = query;
-            output = SharedUtils.getData<TYPE>(cmd);
-            return (output.Count > 0);
+            if (SharedUtils.getData(cmd, out output))
+                return (output.Count > 0);
+
+            return false;
         }
         public static bool doSelect<TYPE>(string selArg, out List<TYPE> output)
         {
@@ -128,8 +142,10 @@ namespace SQLControlsLib
             SqlCommand cmd = new SqlCommand();
             string query = getJoinSelectQuery(ref cmd, getSelArgument<TYPE>(), outputOb.whereobs.ToArray(), outputOb.joins.ToArray());
             cmd.CommandText = query;
-            output = SharedUtils.getData<TYPE>(cmd);
-            return (output.Count > 0);
+            if(SharedUtils.getData(cmd, out output))
+                return (output.Count > 0);
+
+            return false;
         }
 
         public static bool doJoinSelect(string selArg, out List<Dictionary<string, object>> output, JoinPair[] joins)
@@ -146,8 +162,10 @@ namespace SQLControlsLib
             SqlCommand cmd = new SqlCommand();
             string query = getJoinSelectQuery(ref cmd, selArg, whereobs, joins);
             cmd.CommandText = query;
-            output = SharedUtils.getData(cmd);
-            return (output.Count > 0);
+            if(SharedUtils.getData(cmd, out output))
+                return (output.Count > 0);
+
+            return false;
         }
 
         internal static string getSelArgument<TYPE>() where TYPE:DatabaseOutputObject

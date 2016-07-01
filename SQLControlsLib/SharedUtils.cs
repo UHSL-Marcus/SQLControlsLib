@@ -43,11 +43,14 @@ namespace SQLControlsLib
             bool success = false;
             output = default(T);
 
-            List<T> entries = getData<T>(cmd, columnName);
-            if (entries.Count > 0)
+            List<T> entries;
+            if (getData(cmd, columnName, out entries))
             {
-                output = entries[0];
-                success = true;
+                if (entries.Count > 0)
+                {
+                    output = entries[0];
+                    success = true;
+                }
             }
 
             return success;
@@ -58,101 +61,142 @@ namespace SQLControlsLib
             return getSingleEntry(new SqlCommand(sql), columnName, out output);
         }
 
-        internal static List<TYPE> getData<TYPE>(SqlCommand cmd, string column)
+        internal static bool getData<TYPE>(SqlCommand cmd, string column, out List<TYPE> output)
         {
-            DataTableReader reader = SharedUtils.getDataReader(cmd);
+            bool success = false;
+            output = new List<TYPE>();
 
-            List<TYPE> returnList = new List<TYPE>();
-
-            while (reader.Read())
+            DataTableReader reader;
+            if (getDataReader(cmd, out reader))
             {
-
-                for (int i = 0; i < reader.FieldCount; i++)
+                try
                 {
-                    if (reader.GetName(i).Equals(column))
+                    while (reader.Read())
                     {
-                        var entry = reader[i];
-                        if (entry is TYPE)
-                            returnList.Add((TYPE)reader[i]);
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            if (reader.GetName(i).Equals(column))
+                            {
+                                var entry = reader[i];
+                                if (entry is TYPE)
+                                    output.Add((TYPE)reader[i]);
+                            }
+                        }
                     }
+
+                    success = true;
                 }
+                catch (Exception) { }
             }
 
-            return returnList;
+            return success;
         }
 
 
-        internal static List<Dictionary<string, object>> getData(SqlCommand cmd)
+        internal static bool getData(SqlCommand cmd, out List<Dictionary<string, object>> output)
         {
-            DataTableReader reader = getDataReader(cmd);
+            bool success = false;
+            output = new List<Dictionary<string, object>>();
 
-            List<Dictionary<string, object>> returnList = new List<Dictionary<string, object>>();
-            while (reader.Read())
+            DataTableReader reader;
+            if (getDataReader(cmd, out reader))
             {
-                Dictionary<string, object> row = new Dictionary<string, object>();
-
-                for (int i = 0; i < reader.FieldCount; i++)
-                    row.Add(reader.GetName(i), reader[i]);
-            }
-
-            return returnList;
-        }
-
-        internal static List<TYPE> getData<TYPE>(string sql)
-        {
-
-            return getData<TYPE>(new SqlCommand(sql));
-        }
-
-
-        internal static List<TYPE> getData<TYPE>(SqlCommand cmd)
-        {
-            DataTableReader reader = getDataReader(cmd);
-
-            List<TYPE> returnList = new List<TYPE>();
-
-            while (reader.Read())
-            {
-
-                TYPE ob = (TYPE)Activator.CreateInstance(typeof(TYPE));
-
-                for (int i = 0; i < reader.FieldCount; i++)
+                try
                 {
-                    string s = reader.GetName(i);
-                    FieldInfo field = ob.GetType().GetField(reader.GetName(i));
-                    if (field.FieldType == typeof(string[]))
-                        field.SetValue(ob, ((string)reader[i]).Split(','));
-                    else
-                        field.SetValue(ob, reader[i]);
+                    while (reader.Read())
+                    {
+                        Dictionary<string, object> row = new Dictionary<string, object>();
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                            row.Add(reader.GetName(i), reader[i]);
+
+                        output.Add(row);
+                    }
+
+                    success = true;
+                }
+                catch (Exception) { }  
+            }
+
+            return success;
+        }
+
+        internal static bool getData<TYPE>(string sql, out List<TYPE> output)
+        {
+            return getData(new SqlCommand(sql), out output);
+        }
+
+
+        internal static bool getData<TYPE>(SqlCommand cmd, out List<TYPE> output)
+        {
+
+            bool success = false;
+            output = new List<TYPE>();
+
+            DataTableReader reader;
+            if (getDataReader(cmd, out reader))
+            {
+                try
+                {
+                    while (reader.Read())
+                    {
+
+                        TYPE ob = (TYPE)Activator.CreateInstance(typeof(TYPE));
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            string s = reader.GetName(i);
+                            FieldInfo field = ob.GetType().GetField(reader.GetName(i));
+                            if (field.FieldType == typeof(string[]))
+                                field.SetValue(ob, ((string)reader[i]).Split(','));
+                            else
+                                field.SetValue(ob, reader[i]);
+                        }
+
+                        output.Add(ob);
+                    }
+
+                    success = true;
+
+                }
+                catch (Exception) { }
+            }
+
+            return success;
+        }
+
+
+        internal static bool getDataReader(SqlCommand cmd, out DataTableReader output)
+        {
+            output = default(DataTableReader);
+            bool success = false;
+
+            try
+            {
+                DataSet dataSet = new DataSet();
+                SqlDataAdapter adapter = new SqlDataAdapter();
+
+                using (SqlConnection conn = new SqlConnection(Settings.ConnectionString))
+                {
+                    cmd.Connection = conn;
+                    adapter.SelectCommand = cmd;
+                    conn.Open();
+                    adapter.Fill(dataSet);
+
                 }
 
-                returnList.Add(ob);
+                output = dataSet.CreateDataReader();
+                success = true;
             }
+            catch (Exception) { }
 
-            return returnList;
+            return success;
         }
 
-
-        internal static DataTableReader getDataReader(SqlCommand cmd)
+        internal static bool getDataReader(string sql, out DataTableReader output)
         {
-            DataSet dataSet = new DataSet();
-            SqlDataAdapter adapter = new SqlDataAdapter();
-
-            using (SqlConnection conn = new SqlConnection(Settings.ConnectionString))
-            {
-                cmd.Connection = conn;
-                adapter.SelectCommand = cmd;
-                conn.Open();
-                adapter.Fill(dataSet);
-
-            }
-
-            return dataSet.CreateDataReader();
-        }
-
-        internal static DataTableReader getDataReader(string sql)
-        {
-            return getDataReader(new SqlCommand(sql));
+            return getDataReader(new SqlCommand(sql), out output);
         }
 
 
