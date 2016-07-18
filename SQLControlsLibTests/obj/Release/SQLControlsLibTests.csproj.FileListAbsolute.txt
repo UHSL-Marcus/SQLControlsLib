@@ -1,8 +1,0 @@
-C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLibTests\bin\Release\SQLControlsLibTests.dll
-C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLibTests\bin\Release\SQLControlsLibTests.pdb
-C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLibTests\bin\Release\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLibTests\bin\Release\SQLControlsLib.dll
-C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLibTests\bin\Release\SQLControlsLib.pdb
-C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLibTests\obj\Release\SQLControlsLibTests.csprojResolveAssemblyReference.cache
-C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLibTests\obj\Release\SQLControlsLibTests.dll
-C:\Users\ML15AAF\Documents\GitHub\SQLControlsLib\SQLControlsLibTests\obj\Release\SQLControlsLibTests.pdb
